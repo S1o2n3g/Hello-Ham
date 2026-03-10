@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>선택 테스트</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+      radial-gradient(circle at 12% 78%, rgba(255, 203, 119, 0.85) 0 24px, transparent 25px),
+      radial-gradient(circle at 18% 82%, rgba(255, 122, 162, 0.9) 0 18px, transparent 19px),
+      radial-gradient(circle at 26% 80%, rgba(255, 240, 145, 0.88) 0 20px, transparent 21px),
+      radial-gradient(circle at 78% 76%, rgba(255, 182, 193, 0.9) 0 24px, transparent 25px),
+      radial-gradient(circle at 86% 80%, rgba(255, 223, 122, 0.88) 0 18px, transparent 19px),
+      radial-gradient(circle at 70% 84%, rgba(255, 143, 171, 0.9) 0 20px, transparent 21px),
+      linear-gradient(to bottom, #78c8ff 0%, #aee4ff 42%, #d9f4ff 57%, #79cbe3 58%, #5fb0cf 68%, #7fd16c 69%, #58b84c 100%);
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 64%, rgba(82, 165, 202, 0.95) 0 18%, rgba(111, 201, 221, 0.92) 19%, rgba(111, 201, 221, 0.65) 24%, transparent 25%),
+      radial-gradient(circle at 14% 15%, rgba(255,255,255,0.9) 0 20px, transparent 21px),
+      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.85) 0 14px, transparent 15px),
+      radial-gradient(circle at 26% 15%, rgba(255,255,255,0.9) 0 18px, transparent 19px),
+      radial-gradient(circle at 74% 12%, rgba(255,255,255,0.9) 0 22px, transparent 23px),
+      radial-gradient(circle at 80% 13%, rgba(255,255,255,0.85) 0 15px, transparent 16px),
+      radial-gradient(circle at 86% 12%, rgba(255,255,255,0.9) 0 19px, transparent 20px),
+      linear-gradient(to top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 100%);
+    pointer-events: none;
+  }
+
+  body::after {
+    content: "🦋    🦋        🦋";
+    position: fixed;
+    top: 10%;
+    left: 8%;
+    font-size: 30px;
+    letter-spacing: 90px;
+    opacity: 0.85;
+    animation: floatButterflies 12s linear infinite;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 18vh;
+    z-index: 1;
+  }
+
+  .question {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 48px;
+    color: #123226;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 16px 28px;
+    border-radius: 999px;
+    backdrop-filter: blur(5px);
+  }
+
+  .buttons-area {
+    position: relative;
+    width: 100%;
+    height: 260px;
+  }
+
+  #yesBtn,
+  #noBtn {
+    padding: 14px 28px;
+    font-size: 18px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    font-weight: 700;
+  }
+
+  #yesBtn {
+    background: linear-gradient(135deg, #ff8ac2, #ff6699);
+    color: white;
+    position: absolute;
+    left: calc(50% - 110px);
+    top: 90px;
+  }
+
+  #noBtn {
+    background: linear-gradient(135deg, #345d37, #1f3e20);
+    color: white;
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 90px;
+  }
+
+  .grass {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background:
+      repeating-linear-gradient(80deg, transparent 0 14px, rgba(37, 122, 39, 0.9) 14px 16px, transparent 16px 28px),
+      repeating-linear-gradient(100deg, transparent 0 16px, rgba(61, 150, 58, 0.9) 16px 18px, transparent 18px 32px);
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 39, 28, 0.28);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 30;
+  }
+
+  .modal.show {
+    display: flex;
+  }
+
+  .modal-box {
+    width: min(460px, 92vw);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.95) 0 22px, transparent 23px),
+      radial-gradient(circle at 80% 18%, rgba(255,255,255,0.9) 0 18px, transparent 19px),
+      linear-gradient(180deg, #fff8fd 0%, #fff1f7 100%);
+    border-radius: 28px;
+    padding: 34px 28px 26px;
+    text-align: center;
+    box-shadow: 0 24px 70px rgba(47, 56, 35, 0.28);
+    border: 2px solid rgba(255,255,255,0.7);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .modal-box::before {
+    content: "🌸   🦋   🌼";
+    position: absolute;
+    top: 14px;
+    left: 22px;
+    font-size: 26px;
+    letter-spacing: 16px;
+    opacity: 0.9;
+  }
+
+  .modal-box::after {
+    content: "🌷        🌿        🌸";
+    position: absolute;
+    bottom: 12px;
+    left: 18px;
+    right: 18px;
+    font-size: 24px;
+    letter-spacing: 22px;
+    opacity: 0.9;
+  }
+
+  .modal-text {
+    font-size: 28px;
+    color: #7a2f55;
+    margin: 38px 0 24px;
+    font-weight: 700;
+    text-shadow: 0 2px 0 rgba(255,255,255,0.65);
+  }
+
+  #closeModal {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #7fd16c, #4caf50);
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(76, 175, 80, 0.3);
+  }
+
+  @keyframes floatButterflies {
+    0% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(80px) translateY(10px); }
+    50% { transform: translateX(160px) translateY(-8px); }
+    75% { transform: translateX(240px) translateY(14px); }
+    100% { transform: translateX(320px) translateY(0); }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="question">나와 함께 하겠는가 ?</div>
+
+    <div class="buttons-area" id="buttonsArea">
+      <button id="yesBtn">예</button>
+      <button id="noBtn">아니오</button>
+    </div>
+  </div>
+
+  <div class="grass"></div>
+
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <div class="modal-text">그걸 내가 어떻게 믿지?</div>
+      <button id="closeModal">닫기</button>
+    </div>
+  </div>
+
+<script>
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const buttonsArea = document.getElementById("buttonsArea");
+  const modal = document.getElementById("modal");
+  const closeModal = document.getElementById("closeModal");
+
+  yesBtn.addEventListener("click", () => {
+    modal.classList.add("show");
+  });
+
+  closeModal.addEventListener("click", () => {
+    modal.classList.remove("show");
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.remove("show");
+    }
+  });
+
+  function moveButton() {
+    const areaRect = buttonsArea.getBoundingClientRect();
+    const btnWidth = noBtn.offsetWidth || 90;
+    const btnHeight = noBtn.offsetHeight || 50;
+
+    const minX = 20;
+    const minY = 20;
+    const maxX = Math.max(minX, areaRect.width - btnWidth - 20);
+    const maxY = Math.max(minY, areaRect.height - btnHeight - 20);
+
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = Math.random() * (maxY - minY) + minY;
+
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+  }
+
+  noBtn.addEventListener("mouseenter", moveButton);
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    moveButton();
+  });
+
+  window.addEventListener("load", () => {
+    noBtn.style.left = "calc(50% + 20px)";
+    noBtn.style.top = "90px";
+  });
+
+  window.addEventListener("resize", moveButton);
+</script>
+</body>
+</html>
