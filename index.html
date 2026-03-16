@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>선택 테스트</title>
+<title>러브레터</title>
 <style>
   * {
     box-sizing: border-box;
@@ -13,272 +13,309 @@
     margin: 0;
     min-height: 100vh;
     overflow: hidden;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background:
-      radial-gradient(circle at 12% 78%, rgba(255, 203, 119, 0.85) 0 24px, transparent 25px),
-      radial-gradient(circle at 18% 82%, rgba(255, 122, 162, 0.9) 0 18px, transparent 19px),
-      radial-gradient(circle at 26% 80%, rgba(255, 240, 145, 0.88) 0 20px, transparent 21px),
-      radial-gradient(circle at 78% 76%, rgba(255, 182, 193, 0.9) 0 24px, transparent 25px),
-      radial-gradient(circle at 86% 80%, rgba(255, 223, 122, 0.88) 0 18px, transparent 19px),
-      radial-gradient(circle at 70% 84%, rgba(255, 143, 171, 0.9) 0 20px, transparent 21px),
-      linear-gradient(to bottom, #78c8ff 0%, #aee4ff 42%, #d9f4ff 57%, #79cbe3 58%, #5fb0cf 68%, #7fd16c 69%, #58b84c 100%);
+    font-family: "Georgia", "Malgun Gothic", serif;
+    background: #000;
+  }
+
+  .screen {
     position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    overflow: hidden;
   }
 
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 50% 64%, rgba(82, 165, 202, 0.95) 0 18%, rgba(111, 201, 221, 0.92) 19%, rgba(111, 201, 221, 0.65) 24%, transparent 25%),
-      radial-gradient(circle at 14% 15%, rgba(255,255,255,0.9) 0 20px, transparent 21px),
-      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.85) 0 14px, transparent 15px),
-      radial-gradient(circle at 26% 15%, rgba(255,255,255,0.9) 0 18px, transparent 19px),
-      radial-gradient(circle at 74% 12%, rgba(255,255,255,0.9) 0 22px, transparent 23px),
-      radial-gradient(circle at 80% 13%, rgba(255,255,255,0.85) 0 15px, transparent 16px),
-      radial-gradient(circle at 86% 12%, rgba(255,255,255,0.9) 0 19px, transparent 20px),
-      linear-gradient(to top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 100%);
-    pointer-events: none;
-  }
-
-  body::after {
-    content: "🦋    🦋        🦋";
-    position: fixed;
-    top: 10%;
-    left: 8%;
-    font-size: 30px;
-    letter-spacing: 90px;
-    opacity: 0.85;
-    animation: floatButterflies 12s linear infinite;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-
-  .container {
-    width: 100%;
-    max-width: 900px;
-    min-height: 100vh;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 18vh;
-    z-index: 1;
-  }
-
-  .question {
-    font-size: 38px;
-    font-weight: 700;
-    margin-bottom: 48px;
-    color: #123226;
-    text-align: center;
-    text-shadow: 0 2px 10px rgba(255,255,255,0.55);
-    background: rgba(255,255,255,0.35);
-    border: 1px solid rgba(255,255,255,0.5);
-    padding: 16px 28px;
-    border-radius: 999px;
-    backdrop-filter: blur(5px);
-  }
-
-  .buttons-area {
-    position: relative;
-    width: 100%;
-    height: 260px;
-  }
-
-  #yesBtn,
-  #noBtn {
-    padding: 14px 28px;
-    font-size: 18px;
-    border: none;
-    border-radius: 999px;
+  .white-expand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fff;
+    transform: translate(-50%, -50%) scale(1);
+    transform-origin: center;
     cursor: pointer;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
-    font-weight: 700;
+    z-index: 5;
+    box-shadow: 0 0 20px rgba(255,255,255,0.35);
+    transition: transform 1.3s ease-in-out, box-shadow 0.3s ease;
   }
 
-  #yesBtn {
-    background: linear-gradient(135deg, #ff8ac2, #ff6699);
-    color: white;
+  .white-expand:hover {
+    box-shadow: 0 0 32px rgba(255,255,255,0.55);
+  }
+
+  .screen.reveal {
+    background: #fff;
+    transition: background 1.1s ease 0.15s;
+  }
+
+  .screen.reveal .white-expand {
+    transform: translate(-50%, -50%) scale(60);
+    box-shadow: 0 0 140px rgba(255,255,255,0.95);
+  }
+
+  .letter-wrap {
     position: absolute;
-    left: calc(50% - 110px);
-    top: 90px;
-  }
-
-  #noBtn {
-    background: linear-gradient(135deg, #345d37, #1f3e20);
-    color: white;
-    position: absolute;
-    left: calc(50% + 20px);
-    top: 90px;
-  }
-
-  .grass {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 120px;
-    background:
-      repeating-linear-gradient(80deg, transparent 0 14px, rgba(37, 122, 39, 0.9) 14px 16px, transparent 16px 28px),
-      repeating-linear-gradient(100deg, transparent 0 16px, rgba(61, 150, 58, 0.9) 16px 18px, transparent 18px 32px);
-    opacity: 0.85;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .modal {
-    position: fixed;
     inset: 0;
-    background: rgba(20, 39, 28, 0.28);
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    z-index: 30;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    z-index: 10;
   }
 
-  .modal.show {
-    display: flex;
+  .screen.show-letter .letter-wrap {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .modal-box {
-    width: min(460px, 92vw);
-    background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.95) 0 22px, transparent 23px),
-      radial-gradient(circle at 80% 18%, rgba(255,255,255,0.9) 0 18px, transparent 19px),
-      linear-gradient(180deg, #fff8fd 0%, #fff1f7 100%);
-    border-radius: 28px;
-    padding: 34px 28px 26px;
-    text-align: center;
-    box-shadow: 0 24px 70px rgba(47, 56, 35, 0.28);
-    border: 2px solid rgba(255,255,255,0.7);
+  .letter-paper {
+    width: min(680px, 84vw);
+    min-height: min(460px, 72vh);
+    background: linear-gradient(180deg, #fffef9 0%, #fffaf1 100%);
+    border: 1px solid rgba(170, 150, 120, 0.25);
+    border-radius: 10px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.14);
+    padding: 56px 54px;
+    color: #2f2a24;
+    transform: translateY(40px) scale(0.96);
+    transition: transform 0.9s ease;
     position: relative;
     overflow: hidden;
   }
 
-  .modal-box::before {
-    content: "🌸   🦋   🌼";
-    position: absolute;
-    top: 14px;
-    left: 22px;
-    font-size: 26px;
-    letter-spacing: 16px;
-    opacity: 0.9;
+  .screen.show-letter .letter-paper {
+    transform: translateY(0) scale(1);
   }
 
-  .modal-box::after {
-    content: "🌷        🌿        🌸";
+  .letter-paper::before {
+    content: "";
     position: absolute;
-    bottom: 12px;
-    left: 18px;
-    right: 18px;
-    font-size: 24px;
-    letter-spacing: 22px;
-    opacity: 0.9;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 34px,
+      rgba(205, 200, 190, 0.18) 34px 35px
+    );
+    pointer-events: none;
   }
 
-  .modal-text {
-    font-size: 28px;
-    color: #7a2f55;
-    margin: 38px 0 24px;
+  .letter-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .letter-title {
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 0 0 36px;
     font-weight: 700;
-    text-shadow: 0 2px 0 rgba(255,255,255,0.65);
+    color: #1f1b18;
   }
 
-  #closeModal {
-    padding: 12px 24px;
-    font-size: 16px;
+  .letter-body {
+    font-size: clamp(20px, 2.5vw, 28px);
+    line-height: 1.9;
+    margin: 0 0 32px;
+    white-space: pre-line;
+    min-height: 180px;
+  }
+
+  .next-btn {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
     border: none;
     border-radius: 999px;
-    background: linear-gradient(135deg, #7fd16c, #4caf50);
-    color: white;
+    background: #1f1b18;
+    color: #fffef9;
+    font-size: 16px;
     cursor: pointer;
-    font-weight: 700;
-    box-shadow: 0 8px 18px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
-  @keyframes floatButterflies {
-    0% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(80px) translateY(10px); }
-    50% { transform: translateX(160px) translateY(-8px); }
-    75% { transform: translateX(240px) translateY(14px); }
-    100% { transform: translateX(320px) translateY(0); }
+  .next-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .next-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+    transform: none;
+  }
+
+  .heart-burst {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 20;
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -40px;
+    font-size: 28px;
+    opacity: 0;
+    animation: float-heart 2.8s ease-in forwards;
+  }
+
+  @keyframes float-heart {
+    0% {
+      transform: translateY(0) scale(0.8) rotate(0deg);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-110vh) scale(1.25) rotate(18deg);
+      opacity: 0;
+    }
+  }
+
+  .guide {
+    position: absolute;
+    left: 50%;
+    bottom: 36px;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.72);
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    z-index: 6;
+    transition: opacity 0.4s ease;
+  }
+
+  .screen.reveal .guide {
+    opacity: 0;
   }
 </style>
 </head>
 <body>
-  <div class="container">
-    <div class="question">나와 함께 하겠는가 ?</div>
+  <div class="screen" id="screen">
+    <div class="white-expand" id="whiteExpand" aria-label="시작 원"></div>
+    <div class="guide">흰색 원을 클릭해줘</div>
 
-    <div class="buttons-area" id="buttonsArea">
-      <button id="yesBtn">예</button>
-      <button id="noBtn">아니오</button>
+    <div class="letter-wrap" id="letterWrap">
+      <div class="letter-paper">
+        <div class="letter-content">
+          <h1 class="letter-title" id="letterTitle">석현이에게</h1>
+          <p class="letter-body" id="letterBody">안녕? 편지지를 안가져와서 대신 만들어왔어.</p>
+          <button class="next-btn" id="nextBtn" type="button">다음으로</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="grass"></div>
+  <script>
+    const screen = document.getElementById('screen');
+    const whiteExpand = document.getElementById('whiteExpand');
+    const letterTitle = document.getElementById('letterTitle');
+    const letterBody = document.getElementById('letterBody');
+    const nextBtn = document.getElementById('nextBtn');
 
-  <div class="modal" id="modal">
-    <div class="modal-box">
-      <div class="modal-text">그걸 내가 어떻게 믿지?</div>
-      <button id="closeModal">닫기</button>
-    </div>
-  </div>
+    const heartBurst = document.createElement('div');
+    heartBurst.className = 'heart-burst';
+    heartBurst.id = 'heartBurst';
+    document.getElementById('screen').appendChild(heartBurst);
 
-<script>
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn = document.getElementById("noBtn");
-  const buttonsArea = document.getElementById("buttonsArea");
-  const modal = document.getElementById("modal");
-  const closeModal = document.getElementById("closeModal");
+    const pages = [
+      {
+        title: '석현이에게',
+        body: '안녕? 편지지를 안가져와서 대신 만들어왔어.'
+      },
+      {
+        title: '',
+        body: `우리 오늘 1주년이다
+소감이 어때 ?`
+      },
+      {
+        title: '',
+        body: '나는 우리가 본지 두번만에 사귀었는데, 이렇게 오래 잘 만나고 있는게 신기해'
+      },
+      {
+        title: '',
+        body: '2주년에는 더 신기하겠지?'
+      },
+      {
+        title: '',
+        body: '앞으로도 잘 만나쟈'
+      },
+      {
+        title: '',
+        body: '사랑해'
+      },
+      {
+        title: '',
+        body: '안뇽'
+      },
+      {
+        title: '',
+        body: '뿅'
+      },
+      {
+        title: '',
+        body: `이쁘고 귀엽고 사랑스러운 지호가
+2026-03-16`
+      }
+    ];
 
-  yesBtn.addEventListener("click", () => {
-    modal.classList.add("show");
-  });
+    let started = false;
+    let currentPage = 0;
 
-  closeModal.addEventListener("click", () => {
-    modal.classList.remove("show");
-  });
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.classList.remove("show");
+    function renderPage() {
+      const page = pages[currentPage];
+      letterTitle.textContent = page.title;
+      letterBody.textContent = page.body;
+      nextBtn.disabled = currentPage >= pages.length - 1;
+      nextBtn.textContent = currentPage >= pages.length - 1 ? '끝' : '다음으로';
     }
-  });
 
-  function moveButton() {
-    const areaRect = buttonsArea.getBoundingClientRect();
-    const btnWidth = noBtn.offsetWidth || 90;
-    const btnHeight = noBtn.offsetHeight || 50;
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = Math.random() > 0.5 ? '❤' : '💗';
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDuration = `${2.2 + Math.random() * 1.8}s`;
+      heart.style.fontSize = `${22 + Math.random() * 20}px`;
+      heartBurst.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }
 
-    const minX = 20;
-    const minY = 20;
-    const maxX = Math.max(minX, areaRect.width - btnWidth - 20);
-    const maxY = Math.max(minY, areaRect.height - btnHeight - 20);
+    function launchHeartEnding() {
+      for (let i = 0; i < 18; i++) {
+        setTimeout(createHeart, i * 120);
+      }
+    }
 
-    const x = Math.random() * (maxX - minX) + minX;
-    const y = Math.random() * (maxY - minY) + minY;
+    whiteExpand.addEventListener('click', () => {
+      if (started) return;
+      started = true;
 
-    noBtn.style.left = `${x}px`;
-    noBtn.style.top = `${y}px`;
-  }
+      screen.classList.add('reveal');
 
-  noBtn.addEventListener("mouseenter", moveButton);
-  noBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    moveButton();
-  });
+      setTimeout(() => {
+        screen.classList.add('show-letter');
+        renderPage();
+      }, 1100);
+    });
 
-  window.addEventListener("load", () => {
-    noBtn.style.left = "calc(50% + 20px)";
-    noBtn.style.top = "90px";
-  });
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < pages.length - 1) {
+        currentPage += 1;
+        renderPage();
 
-  window.addEventListener("resize", moveButton);
-</script>
+        if (currentPage === pages.length - 1) {
+          launchHeartEnding();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
